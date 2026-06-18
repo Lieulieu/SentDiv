@@ -1,0 +1,60 @@
+SENTDIV - How to Run
+===============================================
+Sentiment / On-chain Divergence Skill
+BNB Hack 2026 | Track 2 Strategy Skills
+===============================================
+
+STEP 1 - Open terminal inside sentdiv-skill
+
+  cd sentdiv-skill
+
+STEP 2 - Run latest signal
+
+  python main.py --token BNB
+
+STEP 3 - Run event-based backtest
+
+  python main.py --token BNB --backtest
+  python main.py --token CMC20 --backtest
+  python main.py --token TWT --backtest
+
+STEP 4 - JSON output for agent integration
+
+  python main.py --token BNB --backtest --json
+
+STEP 5 - Run with real CMC data
+
+Create sentdiv-skill/.env:
+
+  CMC_API_KEY=your_key_here
+
+Run:
+
+  python main.py --source cmc --token BNB --periods 60 --backtest
+  python main.py --source cmc --token CMC20 --periods 60 --backtest --json
+
+Optional DEX context for BNB Chain:
+
+  python main.py --source cmc --token CMC20 --network bsc --contract-address <bsc_contract> --backtest
+
+WHAT TO LOOK FOR
+
+- SHI: Social Heat Index
+- OFI: On-chain Flow Index
+- Divergence: SHI - OFI
+- Signal: BULLISH_HIDDEN_ACCUMULATION, BEARISH_HYPE_WITHOUT_FLOW, etc.
+- Backtest: next-candle execution with fees and exits
+
+CMC INTEGRATION PATH
+
+data/cmc_client.py reads CMC_API_KEY from .env.
+data/cmc_adapter.py maps CMC market and optional DEX data into the SENTDIV row
+schema. The signal and backtest engines do not need to change.
+
+BNB TESTNET PATH
+
+Use BNB Testnet for the dApp/demo layer:
+
+- backend computes signal from CMC real data
+- dApp displays the signal
+- testnet contract stores signal hash or strategy approval event
